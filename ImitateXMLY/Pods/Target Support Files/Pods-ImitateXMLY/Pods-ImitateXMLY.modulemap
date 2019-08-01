@@ -1,0 +1,6 @@
+module Pods_ImitateXMLY {
+  umbrella header "Pods-ImitateXMLY-umbrella.h"
+
+  export *
+  module * { export * }
+}

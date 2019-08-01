@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html>
+<head lang="en">
+	<meta charset="utf-8">
+	<title>TestJS</title>
+</head>
+<body>
+
+	<div style="margin-top: 100px">
+		<h1>Objective-C和JavaScript交互</h1>
+	</div>
+    <div style="height: 200px">
+        <button onclick = "clickAction0(1111111)" style = "font-size: 40px; width: 400px; height: 100px" >
+            button
+        </button>
+    </div>
+    
+    <div style="height: 200px; margin-top: 20px">
+        <button onclick = "clickbtn()" style = "font-size: 40px; width: 400px; height: 100px" >
+            js调用OC代码
+        </button>
+    </div>
+    
+    <button onclick = "login()" style = "font-size: 40px;">登录</button>
+    
+    <div id = "returnValue" style = "font-size: 40px; border: 1px dotted; height: 100px;">
+    </div>
+
+	<script type="text/javascript">
+		
+		function clickAction0(clickId) {
+            var token = "js_tokenString";
+            loginSucceed(token);
+		}
+
+		function clickbtn() {
+            var str = window.iOSDelgate.onClick("点击了button", "调用成功");
+            alert(str);
+		}
+    
+    
+        function OCTransferJS(action, params) {
+<!--            alert('JS代码被OC调用了' + action + params);-->
+            document.getElementById("returnValue").innerHTML = 'JS代码被OC调用, 并向JS传递了参数' + action + '?' + params;
+        }
+    
+        function login() {
+            var token = "js_tokenString";
+            loginSucceed(token);
+        }
+    
+    
+        //////////////////////// JS调用OC 相当于在OC中监听JS代码  或者c重写JS方法///////
+        //!< 登录成功
+        function loginSucceed(token) {
+            var action = "loginSucceed";
+            JSTransferOC(action, token);
+        }
+    
+        //!< JS调用OC入口
+        function JSTransferOC(action, params) {
+            var url = "JSTransferOC://" + action + "?" + params;
+            loadURL(url);
+        }
+    
+        //!< 加载URL
+        function loadURL(url) {
+            window.location.href = url;
+        }
+        //////////////////////// JS调用OC 相当于在OC中监听JS代码  或者c重写JS方法///////
+    
+    
+
+	</script>
+
+</body>
+</html>

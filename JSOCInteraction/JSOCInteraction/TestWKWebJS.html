@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+	<meta charset="utf-8">
+	<title>TestWKWebJS</title>
+</head>
+
+<body>
+
+	<div style="margin-top: 100px">
+		<h1>Objective-C和JavaScript交互---WKWebView</h1>
+	</div>
+
+	<div style="margin-top: 20px">
+		<button onclick = "buttonClick()" style = "font-size: 30px; width: 300px; height: 100px" >
+			点我~
+		</button>
+	</div>
+    
+    <div style="margin-top: 20px">
+        <button onclick = "WKScriptMessageHandlerBtnClick()" style = "font-size: 30px; width: 500px; height: 100px" >
+            WKScriptMessageHandlerBtn
+        </button>
+    </div>
+
+	<div style="margin-top: 20px">
+		<button onclick = "alertButtonClick()" style = "font-size: 30px; width: 300px; height: 100px" >
+			alertButton
+		</button>
+	</div>
+
+	<div style="margin-top: 20px">
+		<button onclick = "confirmButtonClick()" style = "font-size: 30px; width: 300px; height: 100px" >
+			confirmButton
+		</button>
+	</div>
+
+	<div style="margin-top: 20px">
+		<button onclick = "promptButtonClick()" style = "font-size: 30px; width: 300px; height: 100px" >
+			promptButton
+		</button>
+	</div>
+
+    <div style = "font-size: 30px;margin-top: 20px">
+		回调数据展示:
+	</div>
+
+	<div id = "returnValue" style = "font-size: 30px; border: 1px dotted; height: 100px;margin-top: 20px">
+
+    </div>
+    
+    <script type="text/javascript">
+        
+        //!< 通过协议拦截的方式, 进行交互
+        function buttonClick() {
+            var message = '获取到html按钮点击事件';
+            clickSuccess(message);
+        }
+        function clickSuccess(message) {
+            var param = 'JS传递过来了参数:1234';
+            JSTransferOC(message, param);
+        }
+    
+        function JSTransferOC(message, param) {
+            var url = 'JSTransferOC://' + message +'?'+ param;
+            window.location.href = url;
+        }
+    
+        //!< OC调用JS, 并回传给JS参数, JS展示
+        function OCTransferJS(message, param) {
+            document.getElementById('returnValue').innerHTML = message + param;
+        }
+    
+    
+        //!< 通过WKScriptMessageHandler的方式进行交互
+        function WKScriptMessageHandlerBtnClick() {
+            var message = '获取到HTML按钮点击事件';
+            clickComplete(message);
+        }
+        function clickComplete(message) {
+            var param = 'JS传递来了参数:12345';
+            var params = {title:message, content:param};
+            //!< 与webKit进行交互时, JS代码中要这样调用
+            window.webkit.messageHandlers.JSToOC.postMessage(params);
+        }
+    
+    
+        function alertButtonClick() {
+           var result = alert('点击了HTML中的alertButton');
+           document.getElementById('returnValue').innerHTML = result;
+        }
+    
+        function confirmButtonClick() {
+           var result = confirm('点击了HTML中的confirmButton');
+           document.getElementById('returnValue').innerHTML = result;
+        }
+    
+        function promptButtonClick() {
+           var result = prompt('点击了HTML中的promptButton', '确定');
+           document.getElementById('returnValue').innerHTML = result;
+           
+        }
+    
+    
+    </script>
+	
+
+</body>
+
+
+</html>
